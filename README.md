@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # MyFirstDiscordBot
 <<<<<<< HEAD
 A Discord bot I create to learn and have fun. ^^\
@@ -11,3 +12,7 @@ A Discord bot I create to learn and have fun. ^^
 =======
 # MyFirstDiscordBot
 >>>>>>> 832e1a43c7d0a5abec731e659ea35b79f203e507
+=======
+# MyFirstDiscordBot
+A Discord bot I create to learn and have fun. ^^
+>>>>>>> b1eaff9da4f810c46998ec62754158c24171e2f1
