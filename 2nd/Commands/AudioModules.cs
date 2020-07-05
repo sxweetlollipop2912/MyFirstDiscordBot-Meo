@@ -31,7 +31,7 @@ public class AudioModule : ModuleBase<ICommandContext>
         if (channel == null)
         {
             await Context.Channel.TriggerTypingAsync();
-            await Context.Channel.SendMessageAsync("Bạn cần ở trong một kênh thoại!"); 
+            await Context.Channel.SendMessageAsync("Bạn cần ở trong một kênh thoại!");
             return;
         }
 
