@@ -1,13 +1,16 @@
-﻿using System;
+﻿// [log]
+using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Discord;
 using Discord.Audio;
 using Discord.WebSocket;
 
-public class AudioService
+using NAudio.Wave;
+
+public class AudioServiceNAudio
 {
     private readonly ConcurrentDictionary<ulong, IAudioClient> ConnectedChannels = new ConcurrentDictionary<ulong, IAudioClient>();
 
@@ -65,7 +68,7 @@ public class AudioService
             IAudioClient client;
             if (ConnectedChannels.TryRemove(guild.Id, out client))
             {
-                await CancelFfmpeg();
+                await CancelNAudio();
                 await client.StopAsync();
                 Console.WriteLine($"[info][{LogSeverity.Info}] Disconnected from the voice on {guild.Name}.");
             }
@@ -84,22 +87,27 @@ public class AudioService
             IAudioClient client;
             if (ConnectedChannels.TryGetValue(guild.Id, out client))
             {
-                await CancelFfmpeg();
+                var OutFormat = new WaveFormat(48000, 16, 2);
 
-                Console.WriteLine($"[info][{LogSeverity.Debug}] Starting playback of {path} in {guild.Name}");
+                var reader = new Mp3FileReader(path);
+                var naudio = WaveFormatConversionStream.CreatePcmStream(reader);
 
-                using (var ffmpeg = CreateProcess(path))
-                using (var stream = client.CreatePCMStream(AudioApplication.Music))
+                byte[] buffer = new byte[naudio.Length];
+
+                int rest = (int)(naudio.Length - naudio.Position);
+                await naudio.ReadAsync(buffer, 0, rest);
+
+                using (var dstream = client.CreatePCMStream(AudioApplication.Music))
                 {
                     try
                     {
                         Global.cts = new CancellationTokenSource();
                         Global.streaming = true;
-                        await ffmpeg.StandardOutput.BaseStream.CopyToAsync(stream, Global.cts.Token);
+                        await dstream.WriteAsync(buffer, 0, rest, Global.cts.Token);
                     }
                     finally
                     {
-                        await stream.FlushAsync();
+                        await dstream.FlushAsync();
                         Global.streaming = false;
                     }
                 }
@@ -116,43 +124,11 @@ public class AudioService
     }
 
 
-    private Process CreateProcess(string path)
-    {
-        return Process.Start(new ProcessStartInfo
-        {
-            FileName = "ffmpeg.exe",
-            Arguments = $"-hide_banner -loglevel panic -i \"{path}\" -af volume=0.9 -ac 2 -f s16le -ar 48000 pipe:1",
-            UseShellExecute = false,
-            RedirectStandardOutput = true
-        });
-    }
-
-
-    public async Task CancelFfmpeg()
+    public async Task CancelNAudio()
     {
         Global.cts.Cancel();
 
         Console.WriteLine("[log] Playback terminated.");
         await Task.Delay(TimeSpan.FromMilliseconds(1000));
     }
-
-
-    public async Task KillFfmpeg()
-    {
-        Process killFfmpeg = new Process();
-        ProcessStartInfo taskkillStartInfo = new ProcessStartInfo
-        {
-            FileName = "taskkill",
-            Arguments = "/F /IM ffmpeg.exe",
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        killFfmpeg.StartInfo = taskkillStartInfo;
-        killFfmpeg.Start();
-
-        Console.WriteLine("[log] Playback terminated.");
-        await Task.Delay(TimeSpan.FromMilliseconds(1000));
-    }
-
 }

@@ -29,9 +29,10 @@ public class PuzzleModule : InteractiveBase
 
     private class Puzzle
     {
-        public int Size;
+        public static int Size = 3;
         private static string[] Icon3 = new string[9];
         private static string[] Icon4 = new string[12];
+        public static string IconFull;
         public static string ArrowUp;
         public static string ArrowDown;
         public static string ArrowLeft;
@@ -95,7 +96,7 @@ public class PuzzleModule : InteractiveBase
         }
 
 
-        public Puzzle(int size, ulong Id)
+        public Puzzle(ulong Id)
         {
             PlayerId = Id;
 
@@ -108,13 +109,12 @@ public class PuzzleModule : InteractiveBase
             Icon3[6] = EmptySqrStr;
             Icon3[7] = "<:goat_8:727536155117092885>";
             Icon3[8] = "<:goat_9:727536155620540416>";
+            IconFull = "<:goat_full:727537880154767400>";
 
             ArrowUp = "\u2B06\uFE0F";
             ArrowDown = "\u2B07\uFE0F";
             ArrowLeft = "\u2B05\uFE0F";
             ArrowRight = "\u27A1\uFE0F";
-
-            Size = size;
 
             do
             {
@@ -144,7 +144,6 @@ public class PuzzleModule : InteractiveBase
     {
         if (Channel == null) Channel = Context.Channel;
         Puzzle puzzle = Load();
-        RestUserMessage msg;
 
         if (puzzle.IsOver)
         {
@@ -153,7 +152,7 @@ public class PuzzleModule : InteractiveBase
                 Description = $"*{ MentionUtils.MentionUser(puzzle.PlayerId) }* đã kết thúc trò chơi trong ***{puzzle.MoveCount}*** bước! :partying_face::tada::confetti_ball:",
                 Color = Color.Red
             };
-            msg = await SendMessage(embed: embed.Build(), Channel: Channel);
+            await SendMessage(embed: embed.Build(), Channel: Channel);
         }
         else
         {
@@ -162,34 +161,22 @@ public class PuzzleModule : InteractiveBase
                 Description = $"*Người chơi: { MentionUtils.MentionUser(puzzle.PlayerId) }*\nSố bước đã đi: {puzzle.MoveCount}.",
                 Color = Color.Magenta
             };
-            msg = await SendMessage(embed: embed.Build(), Channel: Channel);
+            await SendMessage(embed: embed.Build(), Channel: Channel);
         }
 
         string output = "";
-        for (var i = 0; i < puzzle.Size; i++)
+        for (var i = 0; i < Puzzle.Size; i++)
         {
-            for (var j = 0; j < puzzle.Size; j++)
+            for (var j = 0; j < Puzzle.Size; j++)
             {
                 output += $"{puzzle.Board[i, j]} ";
             }
-            output += "\n";
-
-            if (i % 3 == 2)
-            {
-                msg = await Channel.SendMessageAsync(output);
-                output = "";
-            }
+            if (i == 0)
+                output += $"{Puzzle.IconFull}\n";
+            else output += ":black_large_square:\n";
         }
-        //////////////////////////
-        if (puzzle.Size == 4)
-        {
-            msg = await Channel.SendMessageAsync(output);
-            return await Channel.GetMessagesAsync(3).FlattenAsync();
-        }
-        else
-        {
-            return await Channel.GetMessagesAsync(2).FlattenAsync();
-        }
+        await Channel.SendMessageAsync(output);
+        return await Channel.GetMessagesAsync(2).FlattenAsync();
     }
 
 
@@ -205,12 +192,12 @@ public class PuzzleModule : InteractiveBase
 
         int EnPos = puzzle.EmptySqrPos;
         //up
-        if (puzzle.IsValidMove(EnPos + puzzle.Size, EnPos))
+        if (puzzle.IsValidMove(EnPos + Puzzle.Size, EnPos))
         {
             await msg.AddReactionAsync(emo_up);
         }
         //down
-        if (puzzle.IsValidMove(EnPos - puzzle.Size, EnPos))
+        if (puzzle.IsValidMove(EnPos - Puzzle.Size, EnPos))
         {
             await msg.AddReactionAsync(emo_down);
         }
@@ -236,7 +223,7 @@ public class PuzzleModule : InteractiveBase
             foreach(var user in reactedUsers)
             {
                 if (user.Id == puzzle.PlayerId)
-                    return puzzle.EmptySqrPos + puzzle.Size;
+                    return puzzle.EmptySqrPos + Puzzle.Size;
             }
 
             //down
@@ -244,7 +231,7 @@ public class PuzzleModule : InteractiveBase
             foreach (var user in reactedUsers)
             {
                 if (user.Id == puzzle.PlayerId)
-                    return puzzle.EmptySqrPos - puzzle.Size;
+                    return puzzle.EmptySqrPos - Puzzle.Size;
             }
 
             //left
@@ -271,7 +258,7 @@ public class PuzzleModule : InteractiveBase
                     return -1;
             }
 
-            await Task.Delay(TimeSpan.FromMilliseconds(70));
+            //await Task.Delay(TimeSpan.FromMilliseconds(70));
         }
         s.Stop();
 
@@ -330,7 +317,7 @@ public class PuzzleModule : InteractiveBase
 
 
     [Command("puzzle new", RunMode = RunMode.Async)]
-    public async Task New(int size)
+    public async Task New()
     {
         ulong UserId = Context.Message.Author.Id;
         await SendMessage($"{MentionUtils.MentionUser(UserId)}, bạn có chắc muốn tạo trò chơi mới? (Yes/No)");
@@ -369,7 +356,7 @@ public class PuzzleModule : InteractiveBase
         }
         await (Context.Channel as ITextChannel).DeleteMessagesAsync(await Context.Channel.GetMessagesAsync(2).FlattenAsync());
 
-        Puzzle puzzle = new Puzzle(size, UserId);
+        Puzzle puzzle = new Puzzle(UserId);
         Save(ref puzzle);
 
         await LogDiscord($"puzzle new | {Context.Message.Author.Username} ({Context.Message.Author.Id})");

@@ -62,7 +62,8 @@ class Program
         //********************* Run *********************************
         _services = new ServiceCollection()
             //.AddSingleton(_Cservices)
-            .AddSingleton(new AudioService())
+            .AddSingleton(new AudioServiceFFmpeg())
+            .AddSingleton(new AudioServiceNAudio())
             .AddSingleton<InteractiveService>()
             .AddSingleton(_commands)
             .AddSingleton(_cts)

@@ -1,5 +1,4 @@
-﻿//using FFmpeg
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using Discord;
@@ -7,7 +6,7 @@ using Discord.Commands;
 using Microsoft.Extensions.Configuration;
 
 
-public class AudioModule : ModuleBase<ICommandContext>
+public class AudioModuleFFmpeg : ModuleBase<ICommandContext>
 {
     private readonly AudioServiceFFmpeg _service;
     private readonly IConfigurationRoot _config;
@@ -16,15 +15,15 @@ public class AudioModule : ModuleBase<ICommandContext>
                .SetBasePath(Directory.GetCurrentDirectory())
                .AddJsonFile("songs.json", optional: false, reloadOnChange: true)
                .Build();
-    public AudioModule(AudioServiceFFmpeg service, IConfigurationRoot config)
+    public AudioModuleFFmpeg(AudioServiceFFmpeg service, IConfigurationRoot config)
     {
         _service = service;
         _config = config;
     }
 
 
-    [Command("join", RunMode = RunMode.Async)]
-    [Alias("connect")]
+    [Command("ffjoin", RunMode = RunMode.Async)]
+    [Alias("ffconnect")]
     public async Task JoinCmd()
     {
         var channel = (Context.User as IGuildUser)?.VoiceChannel;
@@ -39,16 +38,16 @@ public class AudioModule : ModuleBase<ICommandContext>
     }
 
 
-    [Command("leave", RunMode = RunMode.Async)]
-    [Alias("disconnect")]
+    [Command("ffleave", RunMode = RunMode.Async)]
+    [Alias("ffdisconnect")]
     public async Task LeaveCmd()
     {
         await _service.LeaveAudio(Context.Guild);
     }
 
 
-    [Command("play", RunMode = RunMode.Async)]
-    [Alias("p")]
+    [Command("ffplay", RunMode = RunMode.Async)]
+    [Alias("ffp")]
     public async Task PlayCmd([Remainder] string file_name)
     {
         if (!_service.isGuildAdded(Context.Guild).Result)
@@ -92,29 +91,16 @@ public class AudioModule : ModuleBase<ICommandContext>
     }
 
 
-    [Command("stop")]
+    [Command("ffstop")]
     public async Task StopCmd()
     {
         await _service.CancelFFmpeg();
     }
 
 
-    [Command("playing")] //debug
-    public async Task PlayingCmd()
+    [Command("killffmpeg")] //debug
+    public async Task KillFFmpegCmd()
     {
-        if (AudioServiceFFmpeg.Global.streaming == false)
-            await ReplyAsync("Not playing.");
-        else
-            await ReplyAsync("Playing!");
-    }
-
-
-    [Command("connecting")] //debug
-    public async Task ConnectingCmd()
-    {
-        if (_service.connectedVChannel(Context.Guild).Result == null)
-            await ReplyAsync("Not connecting.");
-        else
-            await ReplyAsync("Connected!");
+        await _service.KillFFmpeg();
     }
 }
