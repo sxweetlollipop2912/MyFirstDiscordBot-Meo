@@ -302,7 +302,7 @@ public class PuzzleModule : InteractiveBase
                     }
                 }
 
-                //await (Context.Channel as ITextChannel).DeleteMessagesAsync(print);
+                await (Context.Channel as ITextChannel).DeleteMessagesAsync(print);
             }
 
             puzzle = Load();
