@@ -10,4 +10,4 @@ Refer to *[HelpModules.cs](https://github.com/SxweetLollipop/MyFirstDiscordBot/b
 \
 Part of these codes use:\
 -[Discord.Addons.Interactive](https://github.com/foxbot/Discord.Addons.Interactive) of [foxbot](https://github.com/foxbot).\
--[Codeforces.NET](https://github.com/Ex-o/Codeforces.NET) of [Ex-o](https://github.com/Ex-o).\
+-[Codeforces.NET](https://github.com/Ex-o/Codeforces.NET) of [Ex-o](https://github.com/Ex-o).
