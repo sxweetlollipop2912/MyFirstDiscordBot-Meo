@@ -1,7 +1,7 @@
 # MyFirstDiscordBot
 A Discord bot I create to learn and have fun. ^^\
 *v1.5:*\
--Now bot can list all or a specific number of incoming CF contests. New commands of CF will be added soon.\
+-Now bot can list all or a specific number of incoming CF contests. More commands of CF will be added soon.\
 -Help command now has better look. You should now see Puzzle game commands using *'help*.\
 -Re-decorated code and repo.\
 *v1.4:*\
