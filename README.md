@@ -1,5 +1,4 @@
 # MyDiscordBot - Meo
-<img align="right" width="128" src="https://github.com/SxweetLollipop/Meo/blob/master/cat.svg?sanitize=true">
 
 A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net) created in my free time to learn and have fun.^^
 
