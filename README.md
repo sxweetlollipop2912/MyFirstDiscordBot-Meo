@@ -14,6 +14,7 @@ A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net)
 
 To invite my bot, go to *[the link](https://discord.com/api/oauth2/authorize?client_id=675207704293277706&permissions=0&scope=bot)*, select the server you want to invite to, and... tada!~  
 Use `'help` or refer to *[HelpModules.cs](https://github.com/SxweetLollipop/Meo/blob/master/2nd/Commands/BasicCommands/HelpModules.cs)* for full list of commands.
+The bot is currently hosted on my lap, therefore it won't be available at all time.
 
 ## (Part of) the bot's code depends on
 
