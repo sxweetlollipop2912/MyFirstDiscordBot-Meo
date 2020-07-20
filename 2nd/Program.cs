@@ -59,7 +59,7 @@ class Program
         _client.Log += Log;
         _commands = new CommandService();
 
-        //********************* Run *********************************
+     //********************* Run *********************************
         _services = new ServiceCollection()
             //.AddSingleton(_Cservices)
             .AddSingleton(new AudioServiceFFmpeg())
