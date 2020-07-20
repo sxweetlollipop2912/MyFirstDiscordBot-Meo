@@ -4,7 +4,7 @@ A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net)
 
 ## What can it do
 
-- Trivial stuff like `say hi`, `send messages`, `react to messages`,...
+- Trivial stuff like `say hi`, `send messages`, `react to messages`, ...
 - Join an audio channel and stream music (can only stream one server at a time and only songs from *[songs.json](https://github.com/SxweetLollipop/Meo/blob/master/2nd/songs.json)* - which are stored in my desktop :3).
 - Execute commands relevant to *[Codeforces.com](http://codeforces.com)*. More commands will be added in the future.
 - *[Beta]* Host games. Currently it can host Chess, and 3x3 Sliding Puzzle (try it~ >.^).
