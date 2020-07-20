@@ -41,7 +41,7 @@ class Program
 
     public async Task MainAsync(string[] args)
     {
-     //******************** Prepare *********************************
+    //******************** Prepare *********************************
         _cts = new CancellationTokenSource();
 
         Console.WriteLine($"{log_discord} Loading config file...");
