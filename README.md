@@ -6,7 +6,11 @@ A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net)
 
 - Trivial stuff like `say hi`, `send messages`, `react to messages`, ...
 - Join an audio channel and stream music (can only stream one server at a time and only songs from *[songs.json](https://github.com/SxweetLollipop/Meo/blob/master/2nd/songs.json)* - which are stored in my desktop :3).
-- Execute commands relevant to *[Codeforces.com](http://codeforces.com)*. More commands will be added in the future.
+- Execute commands relevant to *[Codeforces.com](http://codeforces.com)*:
+    - List all incoming contests.
+    - Show information, including `rank`, `rating`, `maxRating`, `lastOnlineTime` given the handle of the user.\
+More commands will be added in the future.\
+*[Codeforces.com](http://codeforces.com)* server is sometimes not very responsive lately, especially during contests. At such time, commands may not work.\
 - *[Beta]* Host games. Currently it can host Chess, and 3x3 Sliding Puzzle (try it~ >.^).
 - And some commands I created for my own needs :3.
 
