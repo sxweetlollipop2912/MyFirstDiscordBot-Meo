@@ -12,9 +12,9 @@ A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net)
     - More commands will be added in the future.
     - *[Codeforces.com](http://codeforces.com)* API is not very responsive sometimes, especially during contests. At such time, commands may not work.
 - *[Beta]* Host games:
+    - Games: `Chess`, `3x3 Sliding Puzzle` (try it~ >.^).
     - Has save feature.
     - Can only host one match at a time on all servers.
-    - Games: `Chess`, `3x3 Sliding Puzzle` (try it~ >.^).
 - And some commands I created for my own needs :3.
 
 ## Invite Meo
