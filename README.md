@@ -10,7 +10,7 @@ A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net)
     - List all incoming contests.
     - Show information of a user, including `rank`, `rating`, `maxRating`, `lastOnlineTime`, given the handle of the user.
     - More commands will be added in the future.
-    - *[Codeforces.com](http://codeforces.com)* API is not very responsive sometimes, especially during contests. At such time, commands may not work.
+    - *[Codeforces.com API](https://codeforces.com/apiHelp)* is not very responsive sometimes, especially during contests. At such time, commands may not work.
 - *[Beta]* Host games:
     - Games: `Chess`, `3x3 Sliding Puzzle` (try it~ >.^).
     - Has save feature.
