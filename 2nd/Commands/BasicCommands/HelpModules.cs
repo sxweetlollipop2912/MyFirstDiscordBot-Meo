@@ -133,7 +133,11 @@ public class HelpMudule : ModuleBase<SocketCommandContext>
         embedCF.AddField("*>> 'cf*",
                          "**>> Những lệnh liên quan Codeforces:**")
             .AddField("*'cf contest <số lượng, mặc định là 0>",
-                      "Mèo cho bạn danh sách các contest sắp diễn ra, ưu tiên contest diễn ra (nếu số lượng là 0 thì sẽ in tất cả.");
+                      "Mèo cho bạn danh sách các contest sắp diễn ra, ưu tiên contest diễn ra (nếu số lượng là 0 thì in tất cả).")
+            .AddField("*'cf user <handle>*",
+                      "Mèo cho bạn thông tin về <handle>, gồm *rank*, *rating*, *maxRating*, *lastOnlineTime*.")
+            .AddField("Các lệnh có thể không thực hiện được nếu máy chủ Codeforces đang trong giờ cao điểm.",
+                      "*^^Chúc bạn thi thật tốt và vui vẻ!^^*");
 
         await SendMessage(embed: embedCF.Build());
     }
