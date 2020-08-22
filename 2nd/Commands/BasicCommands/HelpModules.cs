@@ -41,10 +41,10 @@ public class HelpMudule : ModuleBase<SocketCommandContext>
                       "Mèo sẽ giúp bạn gửi tin nhắn đó!")
             .AddField("*'party*",
                       "Đến lúc quẩy rồi!!! :partying_face:")
-            .AddField("*'remind <giờ>(0 - 23) <phút>(0 - 59) <giây>(0 - 59, mặc định là 0) <lời nhắc>*",
+            .AddField("*'rmd <giờ>(0 - 23) <phút>(0 - 59) <lời nhắc>*",
                       "Mèo sẽ nhắc nhở bạn vào thời điểm đó!")
             .AddField("*'wait <giây> <lời nhắn>*",
-                      "Mèo sẽ gửi một tin nhắn y hệt lời nhắn đó sau số giây nhất định!")
+                      "Mèo sẽ gửi lời nhắn đó sau số giây nhất định!")
             .AddField("Ngoài ra, bạn có thể thử *'join*, *'play*, *'stop* và *'leave*~ :notes:",
                       "Dùng *'help exam* để xem các lệnh về các bài kiểm tra~\n" +
                       "Dùng *'help game* để xem các lệnh về trò chơi~\n" +

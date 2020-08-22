@@ -27,8 +27,6 @@ class Program
     private CommandHandler _handler;
     private IServiceProvider _services;
 
-    private ManagementEventWatcher _watcher;
-
     static string log_discord = "[discord]";
     static string log = "[log]";
 
@@ -76,8 +74,7 @@ class Program
             _commands,
             _services,
             _config,
-            _stuff,
-            _watcher);
+            _stuff);
         await _handler.InstallCommandsAsync();
 
         RunAsync(args).Wait();
@@ -112,22 +109,22 @@ class Program
         private readonly IServiceProvider _services;
         private readonly IConfigurationRoot _config;
         private readonly IConfigurationRoot _stuff;
-        private ManagementEventWatcher _watcher;
+        private ManagementEventWatcher _watcher12;
+        private ReminderModule _reminderModule;
 
         public CommandHandler(
             DiscordSocketClient client,
             CommandService commands,
             IServiceProvider services,
             IConfigurationRoot config,
-            IConfigurationRoot stuff,
-            ManagementEventWatcher watcher)
+            IConfigurationRoot stuff)
         {
             _commands = commands;
             _client = client;
             _services = services;
             _config = config;
             _stuff = stuff;
-            _watcher = watcher;
+            _reminderModule = new ReminderModule(_config, _client);
         }
         
 
@@ -142,6 +139,7 @@ class Program
                 await _client.SetGameAsync($"meoow | {_config.GetValue<string>("discord:CommandPrefix")}help");
             };
             _client.Ready += ScheduledTask;
+            //_client.Ready += TaskReminder;
             _client.MessageReceived += HandleCommandAsync;
 
             await _commands.AddModulesAsync(assembly: Assembly.GetEntryAssembly(),
@@ -238,24 +236,61 @@ class Program
 
         private Task ScheduledTask()
         {
-            try { _watcher.Stop(); }
+            try { _watcher12.Stop(); }
             catch (NullReferenceException) { };
 
-            _watcher = new ManagementEventWatcher(new WqlEventQuery
+            _watcher12 = new ManagementEventWatcher(new WqlEventQuery
                ("__InstanceModificationEvent", new TimeSpan(0, 0, 6),
                "TargetInstance isa 'Win32_LocalTime' AND TargetInstance.Hour=0 AND TargetInstance.Minute=0 AND TargetInstance.Second=0"));
 
-            _watcher.EventArrived += async (object sender, EventArrivedEventArgs e) =>
+            _watcher12.EventArrived += async (object sender, EventArrivedEventArgs e) =>
             {
                 var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Lollipop:lollipop")) as ISocketMessageChannel;
 
                 await channel.TriggerTypingAsync();
                 await channel.SendMessageAsync(_stuff.GetValue<string>("pr:12AM"));
             };
-            _watcher.Start();
+            _watcher12.Start();
 
             return Task.CompletedTask;
         }
+
+
+        private async Task TaskReminder()
+        {
+            while (true)
+            {
+                try
+                {
+                    while (true)
+                    {
+                        while (_reminderModule._TaskList.isLocked() || _reminderModule._TaskList.Empty())
+                        {
+                            await Task.Delay(TimeSpan.FromSeconds(5));
+                        }
+                        var task = _reminderModule.Dequeue_and_Save(locked: false);
+
+                        var channel = task.Channel;
+
+                        if (DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 30 > task.unixTime)
+                        {
+                            await channel.TriggerTypingAsync();
+                            await channel.SendMessageAsync($"*{task.Author.Mention}*~\n{task.Message}");
+                            continue;
+                        }
+
+                        await Task.Delay(TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() - task.unixTime));
+                        await channel.TriggerTypingAsync();
+                        await channel.SendMessageAsync($"*{task.Author.Mention}*~\n{task.Message}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"[TaskReminder] {e.ToString()}");
+                }
+            }
+        }
+
 
         private async Task<RestUserMessage> LogDiscord(string log)
         {

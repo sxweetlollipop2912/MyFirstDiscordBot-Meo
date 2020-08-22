@@ -29,38 +29,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
     }
 
 
-    [Command("remind")]
-    [Summary("params: h, m, s")]
-    public async Task Remind(int h, int m, int s, [Remainder]string text)
-    {
-        await Context.Message.DeleteAsync();
-        await LogDiscord
-            ($"Lời nhắc của {Context.Message.Author.Username} ({Context.Message.Author.Id}) ở guild {Context.Guild.Name} ({h}:{m}:{s} / {text})");
-
-        try
-        {
-            WqlEventQuery query = new WqlEventQuery
-               ("__InstanceModificationEvent", new TimeSpan(0, 0, 6),
-               $"TargetInstance isa 'Win32_LocalTime' AND TargetInstance.Hour={h} AND TargetInstance.Minute={m} AND TargetInstance.Second={s}");
-
-            ManagementEventWatcher watcher = new ManagementEventWatcher(query);
-            watcher.EventArrived += async (object sender, EventArrivedEventArgs e) =>
-            {
-                await SendMessage($"*Đây là lời nhắc dành cho {Context.Message.Author.Mention}:*\n{text}");
-            };
-            watcher.Start();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"[log] ScheduledTask in Module: {e}");
-            await LogDiscord($"Lỗi {e} ở lời nhác của {Context.Message.Author.Id} ở guild {Context.Guild.Name} ({h}:{m}:{s} / {text})");
-
-            await SendMessage($"Có lỗi xảy ra. Bạn nhắc lại giúp Mèo thời gian và lời nhắn với, {Context.Message.Author.Mention}.");
-        }
-    }
-
-
-    [Command("remind")]
+    [Command("rmd")]
     [Summary("params: h, m")]
     public async Task Remind(int h, int m, [Remainder]string text)
     {
