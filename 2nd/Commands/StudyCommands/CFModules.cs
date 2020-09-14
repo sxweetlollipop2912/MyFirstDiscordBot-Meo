@@ -39,7 +39,7 @@ public class CFModule : ModuleBase<SocketCommandContext>
 
         var embed = new EmbedBuilder
         {
-            Description = "***>> List of incoming contests:***",
+            Description = "***>> List of upcoming contests:***",
             Color = Color.Red
         };
 

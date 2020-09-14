@@ -270,18 +270,19 @@ class Program
                         }
                         var task = _reminderModule.Dequeue_and_Save(locked: false);
 
-                        var channel = task.Channel;
+                        var channel = _client.GetGuild(task.GuildID).GetTextChannel(task.ChannelID);
+                        var author = _client.GetUser(task.AuthorID);
 
                         if (DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 30 > task.unixTime)
                         {
                             await channel.TriggerTypingAsync();
-                            await channel.SendMessageAsync($"*{task.Author.Mention}*~\n{task.Message}");
+                            await channel.SendMessageAsync($"*{author.Mention}*~\n{task.Message}");
                             continue;
                         }
 
                         await Task.Delay(TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() - task.unixTime));
                         await channel.TriggerTypingAsync();
-                        await channel.SendMessageAsync($"*{task.Author.Mention}*~\n{task.Message}");
+                        await channel.SendMessageAsync($"*{author.Mention}*~\n{task.Message}");
                     }
                 }
                 catch (Exception e)
