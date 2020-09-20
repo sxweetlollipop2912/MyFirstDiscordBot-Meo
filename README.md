@@ -2,15 +2,15 @@
 
 A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net) created in my free time to learn and have fun.^^
 
-## What can it do
+## What it does
 
 - Trivial stuff like `say hi`, `send messages`, `react to messages`, ...
-- Join an audio channel and stream music (only one server at a time and only songs from *[songs.json](https://github.com/SxweetLollipop/MyFirstDiscordBot/blob/master/2nd/songs.json)* - which are stored in my desktop :3).
+- Join an audio channel and stream music (only one server at a time and only songs from *[songs.json](https://github.com/SxweetLollipop/MyFirstDiscordBot/blob/master/2nd/songs.json)* - which are stored on my desktop :3).
 - Execute commands relevant to *[Codeforces.com](http://codeforces.com):*
     - List all incoming contests.
     - Show information of a user, including `rank`, `rating`, `maxRating`, `lastOnlineTime`, given the handle of the user.
     - More commands will be added in the future.
-    - *[Codeforces.com API](https://codeforces.com/apiHelp)* is not very responsive sometimes, especially during contests. At such time, commands may not work.
+    - However, *[Codeforces.com API](https://codeforces.com/apiHelp)* is not very responsive sometimes, especially during contests.
 - *[Beta]* Host games:
     - Games: `Chess`, `3x3 Sliding Puzzle` (try it~ >.^).
     - Has save feature.
@@ -19,7 +19,7 @@ A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net)
 
 ## Invite Meo
 
-To invite my bot, go to *[the link](https://discord.com/api/oauth2/authorize?client_id=675207704293277706&permissions=0&scope=bot)*, select the server you want to invite to, and... tada!~  
+To invite my bot, go to *[this link](https://discord.com/api/oauth2/authorize?client_id=675207704293277706&permissions=0&scope=bot)*, select the server you want to invite to, and... tada!~  
 Use `'help` or refer to *[HelpModules.cs](https://github.com/SxweetLollipop/MyFirstDiscordBot/blob/master/2nd/Commands/BasicCommands/HelpModules.cs)* for full list of commands.  
 The bot is currently hosted on my lap, therefore it won't be available at all time.
 
