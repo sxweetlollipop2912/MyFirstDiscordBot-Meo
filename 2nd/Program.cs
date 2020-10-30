@@ -109,7 +109,7 @@ class Program
         private readonly IServiceProvider _services;
         private readonly IConfigurationRoot _config;
         private readonly IConfigurationRoot _stuff;
-        private ManagementEventWatcher _watcher12;
+        private ManagementEventWatcher _watcher12 = null;
         private ReminderModule _reminderModule;
 
         public CommandHandler(
@@ -236,8 +236,7 @@ class Program
 
         private Task ScheduledTask()
         {
-            try { _watcher12.Stop(); }
-            catch (NullReferenceException) { };
+            /*if (_watcher12 != null) _watcher12.Stop();
 
             _watcher12 = new ManagementEventWatcher(new WqlEventQuery
                ("__InstanceModificationEvent", new TimeSpan(0, 0, 6),
@@ -250,7 +249,7 @@ class Program
                 await channel.TriggerTypingAsync();
                 await channel.SendMessageAsync(_stuff.GetValue<string>("pr:12AM"));
             };
-            _watcher12.Start();
+            _watcher12.Start();*/
 
             return Task.CompletedTask;
         }

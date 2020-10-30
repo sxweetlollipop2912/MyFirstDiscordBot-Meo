@@ -89,7 +89,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
 
 
     [Command("meo")]
-    [Alias("meoo","meooo","meow")]
+    [Alias("meoo","meooo","meow","meoow")]
     public async Task Meo()
     {
         await SendMessage($"{Context.Message.Author.Mention}, *meow meeeow* <:heart_smile:685414591039012900>");
