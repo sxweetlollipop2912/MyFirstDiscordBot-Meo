@@ -16,9 +16,9 @@ A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net)
     - Has save feature.
     - Can only host one match at a time on all servers.
 - And some commands created for my own needs :3.
-- Many commands require a .json file called `config.json` to work. My file isn't uploaded because it contains private infos. In case you need, consider create your own one.
+- Many commands require a .json file called `config.json` to work. My file isn't uploaded because it contains private infos. In case you need, consider create your own.
 
-## The bot's code and functions depend on
+## The bot's code and functionality depend on
 
 - [Discord.Net](https://github.com/RogueException/Discord.Net) of [discord-net](https://github.com/discord-net).
 - [Discord.Addons.Interactive](https://github.com/foxbot/Discord.Addons.Interactive) of [foxbot](https://github.com/foxbot).
