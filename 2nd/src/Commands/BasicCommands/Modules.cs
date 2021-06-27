@@ -11,16 +11,6 @@ using Microsoft.Extensions.Configuration;
 
 public class BasicModule : ModuleBase<SocketCommandContext>
 {
-    private readonly IConfigurationRoot _config;
-    private readonly DiscordSocketClient _client;
-
-    public BasicModule(IConfigurationRoot config, DiscordSocketClient client)
-    {
-        _config = config;
-        _client = client;
-    }
-
-
     [Command("wait", RunMode = RunMode.Async)]
     public async Task Wait(int s, [Remainder]string text)
     {

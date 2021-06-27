@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 
 using Discord;
 using Discord.Commands;
-using Discord.Rest;
 using Discord.WebSocket;
 using Discord.Addons.Interactive;
 
@@ -18,7 +17,6 @@ using Microsoft.Extensions.Configuration;
 public class ChessModule : InteractiveBase
 {
     readonly IConfigurationRoot _config;
-    readonly DiscordSocketClient _client;
 
     public ChessModule(IConfigurationRoot config, DiscordSocketClient client)
     {

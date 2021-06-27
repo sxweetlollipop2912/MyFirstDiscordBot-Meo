@@ -16,16 +16,6 @@ using Microsoft.Extensions.Configuration;
 
 public class CFModule : ModuleBase<SocketCommandContext>
 {
-    readonly IConfigurationRoot _config;
-    readonly DiscordSocketClient _client;
-
-    public CFModule(IConfigurationRoot config, DiscordSocketClient client)
-    {
-        _config = config;
-        _client = client;
-    }
-
-    
     [Command("cf contest", RunMode = RunMode.Async)]
     [Summary("Print a list of all available contests")]
     public async Task ContestList(int count = 0)

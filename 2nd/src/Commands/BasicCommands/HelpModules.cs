@@ -8,17 +8,8 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 
 
-public class HelpMudule : ModuleBase<SocketCommandContext> {
-    readonly IConfigurationRoot _config;
-    readonly DiscordSocketClient _client;
-
-    public HelpMudule(IConfigurationRoot config, DiscordSocketClient client) {
-        _config = config;
-        _client = client;
-    }
-
-
-
+public class HelpMudule : ModuleBase<SocketCommandContext> 
+{
     [Command("help", RunMode = RunMode.Async)]
     [Alias("command", "commands")]
     [Summary("help")]

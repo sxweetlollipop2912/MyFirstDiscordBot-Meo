@@ -15,19 +15,10 @@ using Microsoft.Extensions.Configuration;
 
 public class StudyModule : ModuleBase<SocketCommandContext>
 {
-    readonly IConfigurationRoot _config;
-    readonly DiscordSocketClient _client;
-
     private static IConfigurationRoot _subjects = new ConfigurationBuilder()
               .SetBasePath(Directory.GetCurrentDirectory())
               .AddJsonFile("subjects.json", optional: false, reloadOnChange: true)
               .Build();
-
-    public StudyModule(IConfigurationRoot config, DiscordSocketClient client)
-    {
-        _config = config;
-        _client = client;
-    }
 
     private class TestSchedule
     {
