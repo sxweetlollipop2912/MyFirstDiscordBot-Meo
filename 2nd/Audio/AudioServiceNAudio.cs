@@ -51,12 +51,12 @@ public class AudioServiceNAudio
             var audioClient = await target.ConnectAsync();
             if (ConnectedChannels.TryAdd(guild.Id, audioClient))
             {
-                Console.WriteLine($"[info][{LogSeverity.Info}] Connected to voice on {guild.Name}.");
+                DiscordWrapper.Log($"[info][{LogSeverity.Info}] Connected to voice on {guild.Name}.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[log] {ex.ToString()}");
+            DiscordWrapper.Log($"[log] {ex}");
         }
     }
 
@@ -70,12 +70,12 @@ public class AudioServiceNAudio
             {
                 await CancelNAudio();
                 await client.StopAsync();
-                Console.WriteLine($"[info][{LogSeverity.Info}] Disconnected from the voice on {guild.Name}.");
+                DiscordWrapper.Log($"[info][{LogSeverity.Info}] Disconnected from the voice on {guild.Name}.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[log] {ex.ToString()}");
+            DiscordWrapper.Log($"[log] {ex}");
         }
     }
 
@@ -114,12 +114,12 @@ public class AudioServiceNAudio
             }
             else
             {
-                Console.WriteLine("[log] Voice channel is not added.");
+                DiscordWrapper.Log("[log] Voice channel is not added.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[log] {ex.ToString()}");
+            DiscordWrapper.Log($"[log] {ex}");
         }
     }
 
@@ -128,7 +128,7 @@ public class AudioServiceNAudio
     {
         Global.cts.Cancel();
 
-        Console.WriteLine("[log] Playback terminated.");
+        DiscordWrapper.Log("[log] Playback terminated.");
         await Task.Delay(TimeSpan.FromMilliseconds(1000));
     }
 }

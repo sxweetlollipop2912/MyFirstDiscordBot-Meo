@@ -157,7 +157,7 @@ public class ReminderModule : InteractiveBase
                 return;
             }
 
-            Console.WriteLine("saving");
+            DiscordWrapper.Log("saving");
             if (!Save(_TaskList))
             {
                 DiscordWrapper.Log($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} save failed.");
@@ -168,7 +168,7 @@ public class ReminderModule : InteractiveBase
                 return;
             }
             _TaskList.Unlock();
-            Console.WriteLine("saved");
+            DiscordWrapper.Log("saved");
 
             DiscordWrapper.Log($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} saved.");
             await Context.Channel.TriggerTypingAsync();
@@ -176,7 +176,7 @@ public class ReminderModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
 
             _TaskList.Unlock();
             DiscordWrapper.Log($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} save failed.");
@@ -209,7 +209,7 @@ public class ReminderModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
@@ -218,7 +218,7 @@ public class ReminderModule : InteractiveBase
     {
         try
         {
-            Console.WriteLine("loading");
+            DiscordWrapper.Log("loading");
             var taskListJson = JsonConvert.DeserializeObject<TaskListJson>(File.ReadAllText(_config.GetValue<string>("json:ReminderTaskList.json")));
 
             var taskList = new TaskList(taskListJson);

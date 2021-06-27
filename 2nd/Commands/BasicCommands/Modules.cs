@@ -51,7 +51,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
         }
         catch (Exception e)
         {
-            Console.WriteLine($"[log] ScheduledTask in Module: {e}");
+            DiscordWrapper.Log($"[log] ScheduledTask in Module: {e}");
             DiscordWrapper.Log($"Lỗi {e} ở lời nhác của {Context.Message.Author.Id} ở guild {Context.Guild.Name} ({h}:{m} / {text})");
 
             await DiscordWrapper.SendMessage(Context, $"Có lỗi xảy ra. Bạn nhắc lại giúp Mèo thời gian và lời nhắn với, {Context.Message.Author.Mention}.");
@@ -104,7 +104,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
         var msg = (RestUserMessage)await Context.Channel.GetMessageAsync(MsgID);
         foreach (var s in emotes)
         {
-            Console.WriteLine(s);
+            DiscordWrapper.Log(s);
             if (!Emote.TryParse(s, out var emote))
                 await msg.AddReactionAsync(new Emoji(s));
             else

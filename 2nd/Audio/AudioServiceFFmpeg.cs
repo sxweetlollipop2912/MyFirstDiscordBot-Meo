@@ -48,12 +48,12 @@ public class AudioServiceFFmpeg
             var audioClient = await target.ConnectAsync();
             if (ConnectedChannels.TryAdd(guild.Id, audioClient))
             {
-                Console.WriteLine($"[info][{LogSeverity.Info}] Connected to voice on {guild.Name}.");
+                DiscordWrapper.Log($"[info][{LogSeverity.Info}] Connected to voice on {guild.Name}.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[log] {ex.ToString()}");
+            DiscordWrapper.Log($"[log] {ex}");
         }
     }
 
@@ -67,12 +67,12 @@ public class AudioServiceFFmpeg
             {
                 await CancelFFmpeg();
                 await client.StopAsync();
-                Console.WriteLine($"[info][{LogSeverity.Info}] Disconnected from the voice on {guild.Name}.");
+                DiscordWrapper.Log($"[info][{LogSeverity.Info}] Disconnected from the voice on {guild.Name}.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[log] {ex.ToString()}");
+            DiscordWrapper.Log($"[log] {ex}");
         }
     }
 
@@ -86,7 +86,7 @@ public class AudioServiceFFmpeg
             {
                 await CancelFFmpeg();
 
-                Console.WriteLine($"[info][{LogSeverity.Debug}] Starting playback of {path} in {guild.Name}");
+                DiscordWrapper.Log($"[info][{LogSeverity.Debug}] Starting playback of {path} in {guild.Name}");
 
                 using (var FFmpeg = CreateProcess(path))
                 using (var stream = client.CreatePCMStream(AudioApplication.Music))
@@ -106,12 +106,12 @@ public class AudioServiceFFmpeg
             }
             else
             {
-                Console.WriteLine("[log] Voice channel is not added.");
+                DiscordWrapper.Log("[log] Voice channel is not added.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[log] {ex.ToString()}");
+            DiscordWrapper.Log($"[log] {ex}");
         }
     }
 
@@ -133,7 +133,7 @@ public class AudioServiceFFmpeg
     {
         Global.cts.Cancel();
 
-        Console.WriteLine("[log] Playback terminated.");
+        DiscordWrapper.Log("[log] Playback terminated.");
         await Task.Delay(TimeSpan.FromMilliseconds(1000));
     }
 
@@ -152,7 +152,7 @@ public class AudioServiceFFmpeg
         killFFmpeg.StartInfo = taskkillStartInfo;
         killFFmpeg.Start();
 
-        Console.WriteLine("[log] Playback terminated.");
+        DiscordWrapper.Log("[log] Playback terminated.");
         await Task.Delay(TimeSpan.FromMilliseconds(1000));
     }
 

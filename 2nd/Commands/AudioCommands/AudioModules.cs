@@ -68,7 +68,8 @@ public class AudioModule : ModuleBase<SocketCommandContext> {
             return;
         }
 
-        var metadata = TagLib.File.Create($"{Path}{file_name}");
+        DiscordWrapper.Log("metadata.");
+        /*var metadata = TagLib.File.Create($"{Path}{file_name}");
         var embed = new EmbedBuilder {
             Title = "Hiện đang phát",
             Description = $"{metadata.Tag.Title} - {metadata.Tag.FirstPerformer}",
@@ -76,11 +77,13 @@ public class AudioModule : ModuleBase<SocketCommandContext> {
         };
         embed.WithFooter(footer => footer.Text = $"[{Context.Message.Author.Username}]")
             .WithCurrentTimestamp();
-        var msg = await ReplyAsync(embed: embed.Build());
+        var msg = await ReplyAsync(embed: embed.Build());*/
+
+        DiscordWrapper.Log("set-up done.");
 
         await _service.SendAudioAsync(Context.Guild, $"{Path}{file_name}");
-
-        await msg.DeleteAsync();
+        DiscordWrapper.Log("playback done.");
+        //await msg.DeleteAsync();
     }
 
 

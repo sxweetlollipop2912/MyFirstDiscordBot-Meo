@@ -83,7 +83,7 @@ public class StudyModule : ModuleBase<SocketCommandContext>
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[log] {e.ToString()}");
+                DiscordWrapper.Log($"[log] {e}");
 
                 var msg = await ReplyAsync("Có lỗi xảy ra. Hãy chắc chắn bạn đã nhập đúng cú pháp, với tên các môn học là: Toan, QP, TD, TCMN, CN, Tin, GDCD, Dia, Su, Anh, Van, Sinh, Hoa, Ly, và các thứ trong ngày là từ 2 đến 6.");
                 await Task.Delay(TimeSpan.FromSeconds(3));
@@ -118,7 +118,7 @@ public class StudyModule : ModuleBase<SocketCommandContext>
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[log] {e.ToString()}");
+                DiscordWrapper.Log($"[log] {e}");
 
                 await Context.Channel.TriggerTypingAsync();
                 var msg = await ReplyAsync("Có lỗi xảy ra. Hãy chắc chắn bạn đã nhập đúng cú pháp, với các thứ trong ngày là từ 2 đến 6.");
@@ -157,7 +157,7 @@ public class StudyModule : ModuleBase<SocketCommandContext>
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[log] {e.ToString()}");
+                DiscordWrapper.Log($"[log] {e}");
 
                 await Context.Channel.TriggerTypingAsync();
                 var msg = await ReplyAsync("Có lỗi xảy ra. Hãy chắc chắn bạn đã nhập đúng cú pháp, với tên các môn học là: Toan, QP, TD, TCMN, CN, Tin, GDCD, Dia, Su, Anh, Van, Sinh, Hoa, Ly.");
@@ -192,7 +192,7 @@ public class StudyModule : ModuleBase<SocketCommandContext>
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[log] {e.ToString()}");
+                DiscordWrapper.Log($"[log] {e}");
 
                 var msg = await ReplyAsync("Có lỗi xảy ra. Hãy chắc chắn bạn đã nhập đúng cú pháp, với các thứ trong ngày là từ 2 đến 6.");
                 await Task.Delay(TimeSpan.FromSeconds(3));
@@ -233,7 +233,7 @@ public class StudyModule : ModuleBase<SocketCommandContext>
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[log] {e.ToString()}");
+                DiscordWrapper.Log($"[log] {e}");
 
                 var msg = await ReplyAsync("Có lỗi xảy ra. Hãy chắc chắn bạn đã nhập đúng cú pháp, với tên các môn học là: Toan, QP, TD, TCMN, CN, Tin, GDCD, Dia, Su, Anh, Van, Sinh, Hoa, Ly, và các thứ trong ngày là từ 2 đến 6.");
                 await Task.Delay(TimeSpan.FromSeconds(3));
@@ -280,7 +280,7 @@ public class StudyModule : ModuleBase<SocketCommandContext>
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[log] {e.ToString()}");
+                DiscordWrapper.Log($"[log] {e}");
 
                 var msg = await ReplyAsync("Có lỗi xảy ra. Bạn vui lòng thử lại nhé.");
                 await Task.Delay(TimeSpan.FromSeconds(3));
@@ -325,7 +325,7 @@ public class StudyModule : ModuleBase<SocketCommandContext>
             }
             catch (Exception e)
             {
-                Console.WriteLine($"[log] {e.ToString()}");
+                DiscordWrapper.Log($"[log] {e}");
                 await ReplyAsync("Có lỗi xảy ra. Bạn vui lòng thử lại nhé.");
             }
         }

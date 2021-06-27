@@ -2,10 +2,14 @@
 
 A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net) created in my free time to learn and have fun.^^
 
+## Update 27/06/2021
+
+- Streaming music doesn't work anymore. It worked last time I checked, and I haven't touched the audio part ever since. I'll try to figure out the reason behind this, and fix it in my spare time.
+
 ## What it does
 
 - Trivial commands, i.e. `say hi`, `send messages`, `react to messages`, ...
-- Stream music (one server/one channel at a time and only songs from *[songs.json](https://github.com/SxweetLollipop/MyFirstDiscordBot/blob/master/2nd/songs.json)* - my songs in my laptop :3).
+- *[Not working]* Stream music (one server/one channel at a time and only songs from *[songs.json](https://github.com/SxweetLollipop/MyFirstDiscordBot/blob/master/2nd/songs.json)* - my songs in my laptop :3).
 - Execute commands relevant to *[Codeforces.com](http://codeforces.com):*
     - Listing all incoming contests.
     - Showing information of a user, including `rank`, `rating`, `maxRating`, `lastOnlineTime`, given the handle.

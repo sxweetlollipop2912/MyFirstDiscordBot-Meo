@@ -389,7 +389,7 @@ public class ChessModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
@@ -471,7 +471,7 @@ public class ChessModule : InteractiveBase
         }
         catch (Exception e) 
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
@@ -494,7 +494,7 @@ public class ChessModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
@@ -575,7 +575,7 @@ public class ChessModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
@@ -642,7 +642,7 @@ public class ChessModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
@@ -867,7 +867,7 @@ public class ChessModule : InteractiveBase
         }
         catch (Exception e) 
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
@@ -1001,7 +1001,7 @@ public class ChessModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }

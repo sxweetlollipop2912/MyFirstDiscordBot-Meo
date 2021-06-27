@@ -44,7 +44,7 @@ class Program
     //******************** Prepare *********************************
         _cts = new CancellationTokenSource();
 
-        Console.WriteLine($"{log_discord} Loading config file...");
+        DiscordWrapper.Log($"{log_discord} Loading config file...");
         _config = new ConfigurationBuilder()
                .SetBasePath(JSONBasePath)
                .AddJsonFile("config.json", optional: false, reloadOnChange: true)
@@ -54,7 +54,7 @@ class Program
                .AddJsonFile("Stuff.json", optional: false, reloadOnChange: true)
                .Build();
 
-        Console.WriteLine($"{log_discord} Creating discord client...");
+        DiscordWrapper.Log($"{log_discord} Creating discord client...");
         _client = new DiscordSocketClient();
         _client.Log += Log;
         _commands = new CommandService();
@@ -98,7 +98,7 @@ class Program
 
     private Task Log(LogMessage msg)
     {
-        Console.WriteLine($"{log} {msg.ToString()}");
+        DiscordWrapper.Log($"{log} {msg.ToString()}");
         return Task.CompletedTask;
     }
 
@@ -166,21 +166,21 @@ class Program
                 if (msg.Content.Contains($"<@!{_config.GetValue<ulong>("discord:ClientID")}>") ||
                     msg.Content.Contains($"<@{_config.GetValue<ulong>("discord:ClientID")}>"))
                 {
-                    Console.WriteLine($"{log_discord} Activity in guild {context.Guild.Name}");
+                    DiscordWrapper.Log($"{log_discord} Activity in guild {context.Guild.Name}");
 
                     await msg.Channel.TriggerTypingAsync();
                     await msg.Channel.SendMessageAsync($"*meo meoo*. Bạn cần gì nè, {msg.Author.Mention}?");
                 }
                 else if (msg.Content == "&party")
                 {
-                    Console.WriteLine($"{log_discord} Activity in guild {context.Guild.Name}");
+                    DiscordWrapper.Log($"{log_discord} Activity in guild {context.Guild.Name}");
                     Party_with_goat(context);
                 }
                 return;
             }
 
         // Execute command
-            Console.WriteLine($"{log_discord} Activity in guild {context.Guild.Name}");
+            DiscordWrapper.Log($"{log_discord} Activity in guild {context.Guild.Name}");
 
             var result = await _commands.ExecuteAsync(
                 context: context,
@@ -194,7 +194,7 @@ class Program
                     await msg.Channel.TriggerTypingAsync();
                     await msg.Channel.SendMessageAsync($"Có phải bạn vừa gọi Mèo không, {msg.Author.Mention}?");
                 }
-                Console.WriteLine($"{log} {result.ErrorReason}");
+                DiscordWrapper.Log($"{log} {result.ErrorReason}");
             }
         }
 
@@ -208,7 +208,7 @@ class Program
                 foreach (var attachment in attachments)
                     client.DownloadFileAsync(new Uri(attachment.Url), $"{_config.GetValue<string>("config:downloadPath")}{attachment.Filename}");
 
-                Console.WriteLine($"{log_discord} Downloaded {attachments.Count} file(s) from guild {context.Guild.Name}.");
+                DiscordWrapper.Log($"{log_discord} Downloaded {attachments.Count} file(s) from guild {context.Guild.Name}.");
             }
         }
 
@@ -284,7 +284,7 @@ class Program
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[TaskReminder] {e.ToString()}");
+                    DiscordWrapper.Log($"[TaskReminder] {e}");
                 }
             }
         }*/

@@ -90,7 +90,7 @@ public class PuzzleModule : InteractiveBase
             Board[Row(StPos), Col(StPos)] = EmptySqrStr;
             EmptySqrPos = StPos;
             ++MoveCount;
-            //Console.WriteLine("valid");
+            //DiscordWrapper.Log("valid");
             IsCorrect();
             return true;
         }
@@ -281,7 +281,7 @@ public class PuzzleModule : InteractiveBase
                 IMessage msg = print.First();
 
                 int EnPos = puzzle.EmptySqrPos, StPos = await WaitForMove(msg);
-                //Console.WriteLine($"move {StPos}");
+                //DiscordWrapper.Log($"move {StPos}");
 
                 if (StPos == -1)
                 {
@@ -310,7 +310,7 @@ public class PuzzleModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
@@ -428,7 +428,7 @@ public class PuzzleModule : InteractiveBase
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{log} {e.ToString()}");
+            DiscordWrapper.Log($"{log} {e}");
             return false;
         }
     }
