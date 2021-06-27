@@ -1,0 +1,1 @@
+Move both `LIBSODIUM.DLL` and `OPUS.DLL` to `the executable (.exe) directory`.
