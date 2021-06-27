@@ -2,7 +2,7 @@
 
 A Discord bot using [Discord.Net](https://github.com/RogueException/Discord.Net) created in my free time to learn and have fun.^^
 
-## Update 27/06/2021
+### Update 27/06/2021
 
 - Streaming music doesn't work anymore. It worked last time I checked, and I haven't touched the audio part ever since. I'll try to figure out the reason behind this, and fix it in my spare time.
 
