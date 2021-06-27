@@ -6,13 +6,13 @@ using Discord.Commands;
 using Microsoft.Extensions.Configuration;
 
 
-public class AudioModuleNAudio : ModuleBase<ICommandContext>
+public class AudioModuleNAudio : ModuleBase<SocketCommandContext>
 {
     private readonly AudioServiceNAudio _service;
     private readonly IConfigurationRoot _config;
 
     private IConfigurationRoot _songs = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
+               .SetBasePath(Program.JSONBasePath)
                .AddJsonFile("songs.json", optional: false, reloadOnChange: true)
                .Build();
     public AudioModuleNAudio(AudioServiceNAudio service, IConfigurationRoot config)

@@ -8,13 +8,11 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 
 
-public class HelpMudule : ModuleBase<SocketCommandContext>
-{
+public class HelpMudule : ModuleBase<SocketCommandContext> {
     readonly IConfigurationRoot _config;
     readonly DiscordSocketClient _client;
 
-    public HelpMudule(IConfigurationRoot config, DiscordSocketClient client)
-    {
+    public HelpMudule(IConfigurationRoot config, DiscordSocketClient client) {
         _config = config;
         _client = client;
     }
@@ -24,12 +22,10 @@ public class HelpMudule : ModuleBase<SocketCommandContext>
     [Command("help", RunMode = RunMode.Async)]
     [Alias("command", "commands")]
     [Summary("help")]
-    public async Task Help()
-    {
+    public async Task Help() {
         //return;
 
-        var embed = new EmbedBuilder
-        {
+        var embed = new EmbedBuilder {
             Description = "**>> Cùng điểm qua những câu lệnh Mèo có nào!**",
             Color = Color.Magenta
         };
@@ -52,17 +48,15 @@ public class HelpMudule : ModuleBase<SocketCommandContext>
                       " *^^Chúc bạn một ngày tốt lành!^^*");
 
 
-        await SendMessage(embed: embed.Build());
+        await DiscordWrapper.SendMessage(Context, embed: embed.Build());
     }
 
 
 
     [Command("help exam", RunMode = RunMode.Async)]
     [Alias("command exam", "commands exam")]
-    public async Task HelpExam()
-    {
-        var embedExam = new EmbedBuilder
-        {
+    public async Task HelpExam() {
+        var embedExam = new EmbedBuilder {
             Color = Color.LightOrange
         };
         embedExam.AddField("*>> 'exam*", "**>> Những lệnh liên quan đến các bài kiểm tra trong lớp T.T:**")
@@ -75,17 +69,15 @@ public class HelpMudule : ModuleBase<SocketCommandContext>
             .AddField("*'exam clear*", "Xoá toàn bộ các bài kiểm tra trong danh sách của Mèo!!! :partying_face::tada::confetti_ball:")
             .AddField("^^Cố gắng lên nào!^^ :fist::fist:", "*^^Chúc bạn làm bài thật tốt!^^*");
 
-        await SendMessage(embed: embedExam.Build());
+        await DiscordWrapper.SendMessage(Context, embed: embedExam.Build());
     }
 
 
 
     [Command("help game", RunMode = RunMode.Async)]
     [Alias("command game", "commands game")]
-    public async Task HelpGame()
-    {
-        var embedChess = new EmbedBuilder
-        {
+    public async Task HelpGame() {
+        var embedChess = new EmbedBuilder {
             Color = Color.LightOrange
         };
         embedChess.AddField("*>> 'chess*",
@@ -117,17 +109,15 @@ public class HelpMudule : ModuleBase<SocketCommandContext>
                       "In ra trò chơi đang được lưu.")
             .AddField("^^Chơi hết mình nhé!^^ :fist::fist:", "*^^Chúc mọi người chơi vui vẻ!^^*");
 
-        await SendMessage(embed: embedChess.Build());
+        await DiscordWrapper.SendMessage(Context, embed: embedChess.Build());
     }
 
 
 
     [Command("help CF", RunMode = RunMode.Async)]
     [Alias("command CF", "commands CF")]
-    public async Task HelpCF()
-    {
-        var embedCF = new EmbedBuilder
-        {
+    public async Task HelpCF() {
+        var embedCF = new EmbedBuilder {
             Color = Color.Red
         };
         embedCF.AddField("*>> 'cf*",
@@ -139,20 +129,6 @@ public class HelpMudule : ModuleBase<SocketCommandContext>
             .AddField("Các lệnh có thể không thực hiện được nếu máy chủ Codeforces đang trong giờ cao điểm.",
                       "*^^Chúc bạn thi thật tốt và vui vẻ!^^*");
 
-        await SendMessage(embed: embedCF.Build());
-    }
-
-
-    private async Task<RestUserMessage> LogDiscord(string log)
-    {
-        var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-        return await SendMessage(content: log, Channel: channel);
-    }
-
-    private async Task<RestUserMessage> SendMessage(string content = null, Embed embed = null, ISocketMessageChannel Channel = null)
-    {
-        if (Channel == null) Channel = Context.Channel;
-        await Channel.TriggerTypingAsync();
-        return await Channel.SendMessageAsync(text: content, embed: embed);
+        await DiscordWrapper.SendMessage(Context, embed: embedCF.Build());
     }
 }

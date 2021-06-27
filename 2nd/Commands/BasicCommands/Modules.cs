@@ -11,8 +11,8 @@ using Microsoft.Extensions.Configuration;
 
 public class BasicModule : ModuleBase<SocketCommandContext>
 {
-    readonly IConfigurationRoot _config;
-    readonly DiscordSocketClient _client;
+    private readonly IConfigurationRoot _config;
+    private readonly DiscordSocketClient _client;
 
     public BasicModule(IConfigurationRoot config, DiscordSocketClient client)
     {
@@ -25,7 +25,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
     public async Task Wait(int s, [Remainder]string text)
     {
         await Task.Delay(TimeSpan.FromMilliseconds(Math.Max(0, s * 1000 - 1900)));
-        await SendMessage($"*{Context.Message.Author.Mention}:*\n{text}");
+        await DiscordWrapper.SendMessage(Context, $"*{Context.Message.Author.Mention}:*\n{text}");
     }
 
 
@@ -34,8 +34,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
     public async Task Remind(int h, int m, [Remainder]string text)
     {
         await Context.Message.DeleteAsync();
-        await LogDiscord
-            ($"Lời nhắc của {Context.Message.Author.Username} ({Context.Message.Author.Id}) ở guild {Context.Guild.Name} ({h}:{m} / {text})");
+        DiscordWrapper.Log($"Lời nhắc của {Context.Message.Author.Username} ({Context.Message.Author.Id}) ở guild {Context.Guild.Name} ({h}:{m} / {text})");
 
         try
         {
@@ -46,16 +45,16 @@ public class BasicModule : ModuleBase<SocketCommandContext>
             ManagementEventWatcher watcher = new ManagementEventWatcher(query);
             watcher.EventArrived += async (object sender, EventArrivedEventArgs e) =>
             {
-                await SendMessage($"*Đây là lời nhắc dành cho {Context.Message.Author.Mention}:*\n{text}");
+                await DiscordWrapper.SendMessage(Context, $"*Đây là lời nhắc dành cho {Context.Message.Author.Mention}:*\n{text}");
             };
             watcher.Start();
         }
         catch (Exception e)
         {
             Console.WriteLine($"[log] ScheduledTask in Module: {e}");
-            await LogDiscord($"Lỗi {e} ở lời nhác của {Context.Message.Author.Id} ở guild {Context.Guild.Name} ({h}:{m} / {text})");
+            DiscordWrapper.Log($"Lỗi {e} ở lời nhác của {Context.Message.Author.Id} ở guild {Context.Guild.Name} ({h}:{m} / {text})");
 
-            await SendMessage($"Có lỗi xảy ra. Bạn nhắc lại giúp Mèo thời gian và lời nhắn với, {Context.Message.Author.Mention}.");
+            await DiscordWrapper.SendMessage(Context, $"Có lỗi xảy ra. Bạn nhắc lại giúp Mèo thời gian và lời nhắn với, {Context.Message.Author.Mention}.");
         }
     }
 
@@ -69,7 +68,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
         emotes[2] = "\uD83C\uDF89";    // tada
         emotes[3] = "\uD83C\uDF8A";    // confetti_ball
 
-        var msg = await SendMessage(":cat2::partying_face::tada::confetti_ball::confetti_ball::confetti_ball::tada::partying_face::cat2:");
+        var msg = await DiscordWrapper.SendMessage(Context, ":cat2::partying_face::tada::confetti_ball::confetti_ball::confetti_ball::tada::partying_face::cat2:");
 
         foreach (var emote in emotes)
         {
@@ -84,7 +83,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
     [Summary("greetings")]
     public async Task Hi()
     {
-        await SendMessage($"Chào {Context.Message.Author.Mention}! Bạn khoẻ chứ? :cat:");
+        await DiscordWrapper.SendMessage(Context, $"Chào {Context.Message.Author.Mention}! Bạn khoẻ chứ? :cat:");
     }
 
 
@@ -92,7 +91,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
     [Alias("meoo","meooo","meow","meoow")]
     public async Task Meo()
     {
-        await SendMessage($"{Context.Message.Author.Mention}, *meow meeeow* <:heart_smile:685414591039012900>");
+        await DiscordWrapper.SendMessage(Context, $"{Context.Message.Author.Mention}, *meow meeeow* <:heart_smile:685414591039012900>");
     }
 
 
@@ -126,7 +125,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
         if (text.StartsWith("||") && text.EndsWith("||")) text = text.Substring(2, text.Length - 4);
 
         await Task.Delay(TimeSpan.FromMilliseconds(Math.Max(0, wait_sec * 1000 - 1900)));
-        await SendMessage($"*Từ {author}:*\n{text}");
+        await DiscordWrapper.SendMessage(Context, $"*Từ {author}:*\n{text}");
     }
 
 
@@ -140,7 +139,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
         string author = "Ẩn danh";
         if (anonymous == false) author = Context.Message.Author.Mention;
         if (text.StartsWith("||") && text.EndsWith("||")) text = text.Substring(2, text.Length - 4);
-        await SendMessage($"*Từ {author}:*\n{text}");
+        await DiscordWrapper.SendMessage(Context, $"*Từ {author}:*\n{text}");
     }
 
 
@@ -155,7 +154,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
         if (text.StartsWith("||") && text.EndsWith("||")) text = text.Substring(2, text.Length - 4);
 
         await Task.Delay(TimeSpan.FromMilliseconds(Math.Max(0, wait_sec * 1000 - 1900)));
-        await SendMessage($"*Từ {author}:*\n{text}");
+        await DiscordWrapper.SendMessage(Context, $"*Từ {author}:*\n{text}");
     }
 
 
@@ -168,7 +167,7 @@ public class BasicModule : ModuleBase<SocketCommandContext>
 
         string author = Context.Message.Author.Mention;
         if (text.StartsWith("||") && text.EndsWith("||")) text = text.Substring(2, text.Length - 4);
-        await SendMessage($"*Từ {author}:*\n{text}");
+        await DiscordWrapper.SendMessage(Context, $"*Từ {author}:*\n{text}");
     }
 
 
@@ -177,20 +176,6 @@ public class BasicModule : ModuleBase<SocketCommandContext>
     public async Task Parrot([Remainder]string text)
     {
         await Context.Message.DeleteAsync();
-        await SendMessage(text);
-    }
-
-
-    private async Task<RestUserMessage> LogDiscord(string log)
-    {
-        var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-        return await SendMessage(content: log, Channel: channel);
-    }
-
-    private async Task<RestUserMessage> SendMessage(string content = null, Embed embed = null, ISocketMessageChannel Channel = null)
-    {
-        if (Channel == null) Channel = Context.Channel;
-        await Channel.TriggerTypingAsync();
-        return await Channel.SendMessageAsync(text: content, embed: embed);
+        await DiscordWrapper.SendMessage(Context, text);
     }
 }

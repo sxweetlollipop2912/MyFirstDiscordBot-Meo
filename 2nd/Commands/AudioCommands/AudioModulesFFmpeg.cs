@@ -6,13 +6,13 @@ using Discord.Commands;
 using Microsoft.Extensions.Configuration;
 
 
-public class AudioModuleFFmpeg : ModuleBase<ICommandContext>
+public class AudioModuleFFmpeg : ModuleBase<SocketCommandContext>
 {
     private readonly AudioServiceFFmpeg _service;
     private readonly IConfigurationRoot _config;
 
     private IConfigurationRoot _songs = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
+               .SetBasePath(Program.JSONBasePath)
                .AddJsonFile("songs.json", optional: false, reloadOnChange: true)
                .Build();
     public AudioModuleFFmpeg(AudioServiceFFmpeg service, IConfigurationRoot config)

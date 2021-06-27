@@ -339,13 +339,4 @@ public class StudyModule : ModuleBase<SocketCommandContext>
             return (await channel.SendMessageAsync(log));
         }
     }
-
-
-    public async Task<RestUserMessage> LogDiscord(string log)
-    {
-        var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-
-        await channel.TriggerTypingAsync();
-        return (await channel.SendMessageAsync(log));
-    }
 }

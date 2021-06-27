@@ -171,7 +171,7 @@ public class ChessModule : InteractiveBase
                 (chess.History.Count != 0) ? $"{ChessBoard.Icon[chess.History.Last().Item1]} {chess.History.Last().Item2}." : "Chưa có.");
 
             //await Channel.SendMessageAsync(embed: embed.Build());
-            await SendMessage(embed: embed.Build(), Channel: Channel);
+            await DiscordWrapper.SendMessage(Context, embed: embed.Build(), Channel: Channel);
         }
         else
         {
@@ -184,7 +184,7 @@ public class ChessModule : InteractiveBase
                     Color = Color.Orange
                 };
                 //await Channel.SendMessageAsync(embed: embed.Build());
-                await SendMessage(embed: embed.Build(), Channel: Channel);
+                await DiscordWrapper.SendMessage(Context, embed: embed.Build(), Channel: Channel);
             }
             else if (chess.IsDraw)
             {
@@ -194,7 +194,7 @@ public class ChessModule : InteractiveBase
                     Color = Color.Orange
                 };
                 //await Channel.SendMessageAsync(embed: embed.Build());
-                await SendMessage(embed: embed.Build(), Channel: Channel);
+                await DiscordWrapper.SendMessage(Context, embed: embed.Build(), Channel: Channel);
             }
             else if (chess.IsCheckMate)
             {
@@ -205,7 +205,7 @@ public class ChessModule : InteractiveBase
                     Color = Color.Red
                 };
                 //await ReplyAsync(embed: embed.Build());
-                await SendMessage(embed: embed.Build());
+                await DiscordWrapper.SendMessage(Context, embed: embed.Build());
             }
             else
             {
@@ -215,7 +215,7 @@ public class ChessModule : InteractiveBase
                     Color = Color.Red
                 };
                 //await ReplyAsync(embed: embed.Build());
-                await SendMessage(embed: embed.Build());
+                await DiscordWrapper.SendMessage(Context, embed: embed.Build());
             }
         }
 
@@ -602,7 +602,7 @@ public class ChessModule : InteractiveBase
                 {
                     int[] promo = { ChessBoard.Queen + color, ChessBoard.Rook + color, ChessBoard.Bishop + color, ChessBoard.Knight + color };
 
-                    await SendMessage("move 1: Hậu; 2: Xe; 3: Tượng; 4: Mã");
+                    await DiscordWrapper.SendMessage(Context, "move 1: Hậu; 2: Xe; 3: Tượng; 4: Mã");
                     SocketMessage msg;
                     int ans = 0;
 
@@ -801,7 +801,7 @@ public class ChessModule : InteractiveBase
                 else if (move == "draw")
                 {
                     ulong AskedPlayer = chess.Player[chess.CurrentPlayerIndex ^ 1];
-                    await SendMessage($"{MentionUtils.MentionUser(AskedPlayer)}, bạn có đồng ý hoà ván đấu này? (Yes/No)");
+                    await DiscordWrapper.SendMessage(Context, $"{MentionUtils.MentionUser(AskedPlayer)}, bạn có đồng ý hoà ván đấu này? (Yes/No)");
 
                     string content = null;
                     SocketMessage msg_draw;
@@ -825,11 +825,11 @@ public class ChessModule : InteractiveBase
 
                     if (msg_draw == null)
                     {
-                        await SendMessage($"Người chơi {MentionUtils.MentionUser(AskedPlayer)} không phản hồi, trò chơi sẽ tiếp tục.");
+                        await DiscordWrapper.SendMessage(Context, $"Người chơi {MentionUtils.MentionUser(AskedPlayer)} không phản hồi, trò chơi sẽ tiếp tục.");
                     }
                     else if (content == "no")
                     {
-                        await SendMessage($"Người chơi {MentionUtils.MentionUser(AskedPlayer)} không chấp nhận hoà, trò chơi sẽ tiếp tục.");
+                        await DiscordWrapper.SendMessage(Context, $"Người chơi {MentionUtils.MentionUser(AskedPlayer)} không chấp nhận hoà, trò chơi sẽ tiếp tục.");
                     }
                     else
                     {
@@ -877,7 +877,7 @@ public class ChessModule : InteractiveBase
     public async Task New(string str2)
     {
         ulong UserId = Context.Message.Author.Id;
-        await SendMessage($"{MentionUtils.MentionUser(UserId)}, bạn có chắc muốn tạo ván đấu mới? (Yes/No)");
+        await DiscordWrapper.SendMessage(Context, $"{MentionUtils.MentionUser(UserId)}, bạn có chắc muốn tạo ván đấu mới? (Yes/No)");
 
         string content = null;
         SocketMessage msg;
@@ -901,12 +901,12 @@ public class ChessModule : InteractiveBase
 
         if (msg == null)
         {
-            await SendMessage($"Mèo không nhận được phản hồi của {MentionUtils.MentionUser(UserId)}... :cry:");
+            await DiscordWrapper.SendMessage(Context, $"Mèo không nhận được phản hồi của {MentionUtils.MentionUser(UserId)}... :cry:");
             return;
         }
         else if (content == "no")
         {
-            await SendMessage($"Ván đấu mới sẽ không được tạo.");
+            await DiscordWrapper.SendMessage(Context, $"Ván đấu mới sẽ không được tạo.");
             await Task.Delay(TimeSpan.FromSeconds(5));
             await (Context.Channel as ITextChannel).DeleteMessagesAsync(await Context.Channel.GetMessagesAsync(4).FlattenAsync());
             return;
@@ -929,7 +929,7 @@ public class ChessModule : InteractiveBase
         chess.Player[0] = Context.Message.Author.Id;
 
         Save(ref chess);
-        await LogDiscord($"chess new {MentionUtils.MentionUser(chess.Player[ChessBoard.WhitePlayerIndex]) } *(white)* vs { MentionUtils.MentionUser(chess.Player[ChessBoard.BlackPlayerIndex]) } *(black)*");
+        DiscordWrapper.Log($"chess new {MentionUtils.MentionUser(chess.Player[ChessBoard.WhitePlayerIndex]) } *(white)* vs { MentionUtils.MentionUser(chess.Player[ChessBoard.BlackPlayerIndex]) } *(black)*");
 
         if (!(await Host()))
         {
@@ -939,7 +939,7 @@ public class ChessModule : InteractiveBase
                 Color = Color.Blue
             };
             //await ReplyAsync(embed: embed.Build());
-            await SendMessage(embed: embed.Build());
+            await DiscordWrapper.SendMessage(Context, embed: embed.Build());
         }
     }
 
@@ -966,7 +966,7 @@ public class ChessModule : InteractiveBase
                 Color = Color.Blue
             };
             //await ReplyAsync(embed: embed.Build());
-            await SendMessage(embed: embed.Build());
+            await DiscordWrapper.SendMessage(Context, embed: embed.Build());
         }
     }
 
@@ -1014,19 +1014,5 @@ public class ChessModule : InteractiveBase
     private static bool IsValidMessage(string message)
     {
         return message.StartsWith("move ");
-    }
-
-
-    private async Task<RestUserMessage> LogDiscord(string log)
-    {
-        var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-        return await SendMessage(content: log, Channel: channel);
-    }
-
-    private async Task<RestUserMessage> SendMessage(string content = null, Embed embed = null, ISocketMessageChannel Channel = null)
-    {
-        if (Channel == null) Channel = Context.Channel;
-        await Channel.TriggerTypingAsync();
-        return await Channel.SendMessageAsync(text: content, embed: embed);
     }
 }

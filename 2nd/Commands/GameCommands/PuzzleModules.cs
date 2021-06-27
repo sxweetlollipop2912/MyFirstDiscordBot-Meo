@@ -152,7 +152,7 @@ public class PuzzleModule : InteractiveBase
                 Description = $"*{ MentionUtils.MentionUser(puzzle.PlayerId) }* đã kết thúc trò chơi trong ***{puzzle.MoveCount}*** bước! :partying_face::tada::confetti_ball:",
                 Color = Color.Red
             };
-            await SendMessage(embed: embed.Build(), Channel: Channel);
+            await DiscordWrapper.SendMessage(Context, embed: embed.Build(), Channel: Channel);
         }
         else
         {
@@ -161,7 +161,7 @@ public class PuzzleModule : InteractiveBase
                 Description = $"*Người chơi: { MentionUtils.MentionUser(puzzle.PlayerId) }*\nSố bước đã đi: {puzzle.MoveCount}.",
                 Color = Color.Magenta
             };
-            await SendMessage(embed: embed.Build(), Channel: Channel);
+            await DiscordWrapper.SendMessage(Context, embed: embed.Build(), Channel: Channel);
         }
 
         string output = "";
@@ -320,7 +320,7 @@ public class PuzzleModule : InteractiveBase
     public async Task New()
     {
         ulong UserId = Context.Message.Author.Id;
-        await SendMessage($"{MentionUtils.MentionUser(UserId)}, bạn có chắc muốn tạo trò chơi mới? (Yes/No)");
+        await DiscordWrapper.SendMessage(Context, $"{MentionUtils.MentionUser(UserId)}, bạn có chắc muốn tạo trò chơi mới? (Yes/No)");
 
         string content = null;
         SocketMessage msg;
@@ -344,12 +344,12 @@ public class PuzzleModule : InteractiveBase
 
         if (msg == null)
         {
-            await SendMessage($"Mèo không nhận được phản hồi của {MentionUtils.MentionUser(UserId)}... :cry:");
+            await DiscordWrapper.SendMessage(Context, $"Mèo không nhận được phản hồi của {MentionUtils.MentionUser(UserId)}... :cry:");
             return;
         }
         else if (content == "no")
         {
-            await SendMessage($"Trò chơi mới sẽ không được tạo.");
+            await DiscordWrapper.SendMessage(Context, $"Trò chơi mới sẽ không được tạo.");
             await Task.Delay(TimeSpan.FromSeconds(5));
             await (Context.Channel as ITextChannel).DeleteMessagesAsync(await Context.Channel.GetMessagesAsync(4).FlattenAsync());
             return;
@@ -359,7 +359,7 @@ public class PuzzleModule : InteractiveBase
         Puzzle puzzle = new Puzzle(UserId);
         Save(ref puzzle);
 
-        await LogDiscord($"puzzle new | {Context.Message.Author.Username} ({Context.Message.Author.Id})");
+        DiscordWrapper.Log($"puzzle new | {Context.Message.Author.Username} ({Context.Message.Author.Id})");
 
         if (!(await Host()))
         {
@@ -368,7 +368,7 @@ public class PuzzleModule : InteractiveBase
                 Description = $"Trò chơi của {MentionUtils.MentionUser(puzzle.PlayerId) } đã tạm dừng.",
                 Color = Color.Blue
             };
-            await SendMessage(embed: embed.Build());
+            await DiscordWrapper.SendMessage(Context, embed: embed.Build());
         }
     }
 
@@ -394,7 +394,7 @@ public class PuzzleModule : InteractiveBase
                 Description = $"Trò chơi của {MentionUtils.MentionUser(puzzle.PlayerId) } đã tạm dừng.",
                 Color = Color.Blue
             };
-            await SendMessage(embed: embed.Build());
+            await DiscordWrapper.SendMessage(Context, embed: embed.Build());
         }
     }
 
@@ -436,19 +436,5 @@ public class PuzzleModule : InteractiveBase
     private Puzzle Load()
     {
         return JsonConvert.DeserializeObject<Puzzle>(File.ReadAllText(_config.GetValue<string>("json:Puzzle.json")));
-    }
-
-
-    private async Task<RestUserMessage> LogDiscord(string log)
-    {
-        var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-        return await SendMessage(content: log, Channel: channel);
-    }
-
-    private async Task<RestUserMessage> SendMessage(string content = null, Embed embed = null, ISocketMessageChannel Channel = null)
-    {
-        if (Channel == null) Channel = Context.Channel;
-        await Channel.TriggerTypingAsync();
-        return await Channel.SendMessageAsync(text: content, embed: embed);
     }
 }

@@ -127,13 +127,13 @@ public class ReminderModule : InteractiveBase
         {
             for (int i = 0; i < 5 && _TaskList.isLocked(); i++)
             {
-                var msg = await SendMessage("Có lỗi xảy ra. Tự động thử lại sau 5s.");
+                var msg = await DiscordWrapper.SendMessage(Context, "Có lỗi xảy ra. Tự động thử lại sau 5s.");
                 await Task.Delay(TimeSpan.FromSeconds(3));
                 await msg.DeleteAsync();
             }
             if (_TaskList.isLocked())
             {
-                await LogDiscord($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} failed due to locked TaskList.");
+                DiscordWrapper.Log($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} failed due to locked TaskList.");
                 await Context.Channel.TriggerTypingAsync();
                 await ReplyAndDeleteAsync($"{Context.Message.Author.Mention}, đã thử lại quá 5 lần. Bạn vui lòng hãy đợi 1 phút và thử lại.", timeout: TimeSpan.FromMinutes(1));
                 return;
@@ -145,7 +145,7 @@ public class ReminderModule : InteractiveBase
 
             if (task.unixTime < DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 30)
             {
-                await LogDiscord($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} failed due to invalid time.");
+                DiscordWrapper.Log($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} failed due to invalid time.");
                 await Context.Channel.TriggerTypingAsync();
                 await ReplyAndDeleteAsync($"{Context.Message.Author.Mention}, thời gian không hợp lệ. Hãy đặt thời gian cách hiện tại ít nhất 1 phút.", timeout: TimeSpan.FromMinutes(1));
                 return;
@@ -160,7 +160,7 @@ public class ReminderModule : InteractiveBase
             Console.WriteLine("saving");
             if (!Save(_TaskList))
             {
-                await LogDiscord($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} save failed.");
+                DiscordWrapper.Log($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} save failed.");
                 await Context.Channel.TriggerTypingAsync();
                 await ReplyAndDeleteAsync($"{Context.Message.Author.Mention}, có lỗi xảy ra trong quá trình lưu. Bạn hãy thử lại.", timeout: TimeSpan.FromMinutes(1));
 
@@ -170,7 +170,7 @@ public class ReminderModule : InteractiveBase
             _TaskList.Unlock();
             Console.WriteLine("saved");
 
-            await LogDiscord($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} saved.");
+            DiscordWrapper.Log($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} saved.");
             await Context.Channel.TriggerTypingAsync();
             await ReplyAndDeleteAsync($"{Context.Message.Author.Mention}, đã lưu lời nhắc thành công!", timeout: TimeSpan.FromMinutes(1));
         }
@@ -179,7 +179,7 @@ public class ReminderModule : InteractiveBase
             Console.WriteLine($"{log} {e.ToString()}");
 
             _TaskList.Unlock();
-            await LogDiscord($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} save failed.");
+            DiscordWrapper.Log($"Reminder: {h} {m} {day} {month} {year} {text} *from* {Context.Message.Author.Username} save failed.");
             await Context.Channel.TriggerTypingAsync();
             await ReplyAndDeleteAsync($"{Context.Message.Author.Mention}, có lỗi xảy ra. Bạn hãy thử lại.", timeout: TimeSpan.FromMinutes(1));
         }
@@ -230,18 +230,5 @@ public class ReminderModule : InteractiveBase
         {
             return new TaskList();
         }
-    }
-
-    private async Task<RestUserMessage> LogDiscord(string log)
-    {
-        var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-        return await SendMessage(content: log, Channel: channel);
-    }
-
-    private async Task<RestUserMessage> SendMessage(string content = null, Embed embed = null, ISocketMessageChannel Channel = null)
-    {
-        if (Channel == null) Channel = Context.Channel;
-        await Channel.TriggerTypingAsync();
-        return await Channel.SendMessageAsync(text: content, embed: embed);
     }
 }

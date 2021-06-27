@@ -27,8 +27,10 @@ class Program
     private CommandHandler _handler;
     private IServiceProvider _services;
 
-    static string log_discord = "[discord]";
-    static string log = "[log]";
+    private static string log_discord = "[discord]";
+    private static string log = "[log]";
+
+    public static string JSONBasePath = "D:\\Music\\FPC\\Code\\Bot\\2nd\\2nd\\JSONs";
 
     public static void Main(string[] args)
     {
@@ -44,11 +46,11 @@ class Program
 
         Console.WriteLine($"{log_discord} Loading config file...");
         _config = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
+               .SetBasePath(JSONBasePath)
                .AddJsonFile("config.json", optional: false, reloadOnChange: true)
                .Build();
         _stuff = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
+               .SetBasePath(JSONBasePath)
                .AddJsonFile("Stuff.json", optional: false, reloadOnChange: true)
                .Build();
 
@@ -130,10 +132,6 @@ class Program
 
         public async Task InstallCommandsAsync()
         {
-            _client.Ready += async () =>
-            {
-                await LogDiscord("Khởi động Bot.");
-            };
             _client.Ready += async () =>
             {
                 await _client.SetGameAsync($"meoow | {_config.GetValue<string>("discord:CommandPrefix")}help");
@@ -255,7 +253,7 @@ class Program
         }
 
 
-        private async Task TaskReminder()
+        /*private async Task TaskReminder()
         {
             while (true)
             {
@@ -289,27 +287,6 @@ class Program
                     Console.WriteLine($"[TaskReminder] {e.ToString()}");
                 }
             }
-        }
-
-
-        private async Task<RestUserMessage> LogDiscord(string log)
-        {
-            var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-
-            await channel.TriggerTypingAsync();
-            var msg = await channel.SendMessageAsync(log);
-
-            return msg;
-        }
-    }
-
-    private async Task<RestUserMessage> LogDiscord(string log)
-    {
-        var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-
-        await channel.TriggerTypingAsync();
-        var msg = await channel.SendMessageAsync(log);
-
-        return msg;
+        }*/
     }
 }

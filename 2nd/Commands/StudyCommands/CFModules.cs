@@ -63,7 +63,7 @@ public class CFModule : ModuleBase<SocketCommandContext>
             --count;
         }
 
-        await SendMessage(embed: embed.Build());
+        await DiscordWrapper.SendMessage(Context, embed: embed.Build());
     }
 
 
@@ -85,7 +85,7 @@ public class CFModule : ModuleBase<SocketCommandContext>
         embed.AddField(user.Handle,
                        $"Rank: {user.Rank}\nRating: {user.Rating}\nMax Rating: {user.MaxRating}\nLast Online: {LODate}");
 
-        await SendMessage(embed: embed.Build());
+        await DiscordWrapper.SendMessage(Context, embed: embed.Build());
     }
 
 
@@ -116,18 +116,5 @@ public class CFModule : ModuleBase<SocketCommandContext>
             return Color.Red;
         // Headquarters
         return Color.DarkerGrey;
-    }
-
-    private async Task<RestUserMessage> LogDiscord(string log)
-    {
-        var channel = _client.GetChannel(_config.GetValue<ulong>("guild:Test:log")) as ISocketMessageChannel;
-        return await SendMessage(content: log, Channel: channel);
-    }
-
-    private async Task<RestUserMessage> SendMessage(string content = null, Embed embed = null, ISocketMessageChannel Channel = null)
-    {
-        if (Channel == null) Channel = Context.Channel;
-        await Channel.TriggerTypingAsync();
-        return await Channel.SendMessageAsync(text: content, embed: embed);
     }
 }
